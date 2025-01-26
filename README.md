@@ -16,6 +16,8 @@
   - Its extension, [pgvector](https://github.com/pgvector/pgvector), is used for storing embeddings and similarity searching.
 - [Blob](https://vercel.com/docs/storage/vercel-blob) A storage solution provided by Vercel for handling large binary objects.
 - [NextAuth.js](https://github.com/nextauthjs/next-auth) An authentication library for Next.js applications.
+- [ngrok](https://ngrok.com) A tool to expose local servers to the internet securely.
+- [Ollama](https://ollama.com) A platform for running and managing AI models locally on your device.
 
 ## Model
 
@@ -26,11 +28,7 @@
 
 Before running the project locally, ensure you have the following prerequisites set up:
 
-1. **Node.js**: Make sure you have Node.js installed. You can download it from [here](https://nodejs.org/).
-
-2. **PostgreSQL**: Install PostgreSQL and set it up. You can download it from [here](https://www.postgresql.org/download/).
-
-3. **Environment Variables**: Create a `.env.local` file in the root directory of the project and add the following variables (refer to `.env.example` for guidance):
+**Environment Variables**: Create a `.env.local` file in the root directory of the project and add the following variables (refer to `.env.example` for guidance):
 
    ```env
    //not necessarily needed if you want to change to another model provider for text generating model
