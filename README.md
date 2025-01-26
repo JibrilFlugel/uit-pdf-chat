@@ -51,7 +51,7 @@ Once you have these prerequisites set up, follow the steps below to run the proj
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/uit-pdf-chat.git
+   git clone https://github.com/JibrilFlugel/uit-pdf-chat.git
    ```
 2. Navigate to the project directory:
    ```bash
