@@ -1,11 +1,9 @@
 import { auth } from "@/app/(auth)/auth";
 import { insertChunks } from "@/app/db";
 import { getPdfContentFromUrl } from "@/utils/pdf";
-import { openai } from "@ai-sdk/openai";
-import { ollama } from "@/ai";
+import { google } from "@/ai";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { put } from "@vercel/blob";
-import { embedMany } from "ai";
 
 export async function POST(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -38,17 +36,25 @@ export async function POST(request: Request) {
   });
   const chunkedContent = await textSplitter.createDocuments([content]);
 
-  const { embeddings } = await embedMany({
-    model: ollama.embedding("mxbai-embed-large"),
-    values: chunkedContent.map((chunk) => chunk.pageContent),
+  const { embeddings } = await google.models.embedContent({
+    model: "text-embedding-004",
+    contents: chunkedContent.map((chunk) => chunk.pageContent),
+    config: {
+      outputDimensionality: 10,
+      taskType: "SEMANTIC_SIMILARITY",
+    },
   });
+
+  if (!embeddings) {
+    return new Response("Failed to generate embeddings", { status: 500 });
+  }
 
   await insertChunks({
     chunks: chunkedContent.map((chunk, i) => ({
       id: `${user.email}/${filename}/${i}`,
       filePath: `${user.email}/${filename}`,
       content: chunk.pageContent,
-      embedding: embeddings[i],
+      embedding: embeddings[i].values,
     })),
   });
 

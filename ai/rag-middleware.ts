@@ -3,13 +3,12 @@ import { getChunksByFilePaths } from "@/app/db";
 import { openai } from "@ai-sdk/openai";
 import {
   cosineSimilarity,
-  embed,
   Experimental_LanguageModelV1Middleware,
   generateObject,
   generateText,
 } from "ai";
 import { z } from "zod";
-import { ollama } from ".";
+import { google } from ".";
 
 // schema for validating the custom provider metadata
 const selectionSchema = z.object({
@@ -73,10 +72,17 @@ export const ragMiddleware: Experimental_LanguageModelV1Middleware = {
     });
 
     // Embed the hypothetical answer
-    const { embedding: hypotheticalAnswerEmbedding } = await embed({
-      model: ollama.embedding("mxbai-embed-large"),
-      value: hypotheticalAnswer,
-    });
+    const { embeddings: hypotheticalAnswerEmbedding } =
+      await google.models.embedContent({
+        model: "text-embedding-004",
+        contents: hypotheticalAnswer,
+        config: {
+          outputDimensionality: 10,
+          taskType: "SEMANTIC_SIMILARITY",
+        },
+      });
+
+    console.log(hypotheticalAnswerEmbedding);
 
     // find relevant chunks based on the selection
     const chunksBySelection = await getChunksByFilePaths({
@@ -86,7 +92,7 @@ export const ragMiddleware: Experimental_LanguageModelV1Middleware = {
     const chunksWithSimilarity = chunksBySelection.map((chunk) => ({
       ...chunk,
       similarity: cosineSimilarity(
-        hypotheticalAnswerEmbedding,
+        hypotheticalAnswerEmbedding?.[0]?.values ?? [],
         chunk.embedding
       ),
     }));
