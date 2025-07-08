@@ -12,14 +12,14 @@ import { Session } from "next-auth";
 
 const suggestedActions = [
   {
-    title: "Điều kiện xét tốt nghiệp?",
-    label: "trường Đại học Công nghệ Thông tin?",
-    action: "Điều kiện xét tốt nghiệp của trường Đại học Công nghệ Thông tin?",
+    title: "Summarize",
+    label: "Give me the summary for the document?",
+    action: "What's the summary for the document?",
   },
   {
-    title: "Cách tính điểm trung bình",
-    label: "ĐTBHK, ĐTBC và ĐTBCTL.",
-    action: "ĐTBHK, ĐTBC và ĐTBCTL được tính theo công thức nào?",
+    title: "Find Keywords",
+    label: "List the main keywords in the document.",
+    action: "What are the main keywords in this document?",
   },
 ];
 
